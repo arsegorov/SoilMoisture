@@ -12,39 +12,39 @@
 WiFiUDP ntpUDP;
 EasyNTPClient eNTPclient(ntpUDP, NTP_POOL);
 
+/**
+ * An NTP time provider
+*/
 time_t get_ntp_time() {
-  // time_t t = eNTPclient.getUnixTime();
-  // Serial.print("Time since UNIX epoch: ");
-  // Serial.println(t);
-
-  // return t;
   return eNTPclient.getUnixTime();
 }
 
 
+Timezone local_tz = Timezone(UTC);
+
+/**
+ * Sets up an NTP client and syncs the time from the internet.
+*/
 void time_setup() {
+  time_t t = 0UL;
   unsigned long offset = millis(), wait;
-  // Serial.print("Time since boot-up: ");
-  // Serial.println(offset / 1000UL);
-  // Serial.println();
 
   Serial.println("Syncing time from the internet...");
   setSyncProvider(get_ntp_time);
-  time_t t = now();
+  t = now();
 
-  while (t < 3600UL) {
-    // Serial.println("Too low, trying again");
+  // If the time didn't sync, try for an hour before giving up
+  // TODO: update this logic to a more elegant failure handling
+  while (t < 3600UL) { 
     blink(CYAN, REALLY_DIM, ONE, 1, 0);
 
     setSyncProvider(get_ntp_time);
     t = now();
     wait = millis() - offset;
   }
-  // Serial.print("Wait time: ");
-  // Serial.println(wait / 1000UL);
-  // Serial.println();
+
   setTime(now() + wait / 1000UL);
-  setSyncInterval(86400UL);
+  setSyncInterval(NTP_UPDATE_IMTERVAL);
 
   Serial.println("Internet time sync complete.");
   blink(CYAN, BRIGHT, TENTH, 5);
@@ -52,9 +52,16 @@ void time_setup() {
   Serial.print("Current UTC time: ");
   Serial.println(utc_time_string());
   Serial.println();
+
+  local_tz = Timezone(PDT, PST);
 }
 
 
+/**
+ * Breaks down a Unix timestamp into date-time components. Assumes UTC.
+ * 
+ * @param unix_timestamp the seconds count from the Unix epoch in GMT
+*/
 tmElements_t utc_time_tuple(time_t unix_timestamp) {
   tmElements_t utc_tuple;
   breakTime(unix_timestamp, utc_tuple);
@@ -63,6 +70,9 @@ tmElements_t utc_time_tuple(time_t unix_timestamp) {
 }
 
 
+/**
+ * Generates a date-time string for the current time in UTC.
+*/
 String utc_time_string() {
   tmElements_t utc_tuple = utc_time_tuple(now());
 
@@ -77,18 +87,22 @@ String utc_time_string() {
 }
 
 
-TimeChangeRule pdt = {"PDT", Second, Sun, Mar, 2, PDT_TZ_OFFSET},
-               pst = {"PST", First, Sun, Nov, 2, PST_TZ_OFFSET};
-Timezone pacific = Timezone(pdt, pst);
-
+/**
+ * Breaks down a Unix timestamp into date-time components. Assumes local timezone.
+ * 
+ * @param unix_timestamp the seconds count from the Unix epoch in GMT
+*/
 tmElements_t local_time_tuple(time_t unix_timestamp) {
   tmElements_t local_tuple;
-  breakTime(pacific.toLocal(unix_timestamp), local_tuple);
+  breakTime(local_tz.toLocal(unix_timestamp), local_tuple);
 
   return local_tuple;
 }
 
 
+/**
+ * Generates a date-time string for the current time in local timezone.
+*/
 String local_time_string() {
   time_t t = now();
   tmElements_t local_tuple = local_time_tuple(t);
@@ -100,5 +114,5 @@ String local_time_string() {
          + ", " + (local_tuple.Hour < 10 ? "0" : "") + String(local_tuple.Hour)
          + ":" + (local_tuple.Minute < 10 ? "0" : "") + String(local_tuple.Minute)
          + ":" + (local_tuple.Second < 10 ? "0" : "") + String(local_tuple.Second)
-         + " " + (pacific.locIsDST(t) ? pdt.abbrev : pst.abbrev);
+         + " " + (local_tz.locIsDST(t) ? PDT.abbrev : PST.abbrev);
 }
