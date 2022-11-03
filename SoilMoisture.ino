@@ -7,9 +7,6 @@
 #include "utils.h"
 
 
-time_t last_measurement_time = 0UL;
-const time_t MEASUREMENT_INTERVAL = 600UL;
-
 void setup() {
   serial_up();
   rgb_setup();
@@ -28,6 +25,9 @@ void setup() {
   blink(GREEN, BRIGHT, TENTH, 10);
 }
 
+
+time_t last_measurement_time = 0UL;
+const time_t MEASUREMENT_INTERVAL = 600UL;
 
 float value = 0.0;
 String local_time = "Ddd, 0000-00-00, 00:00:00 ZZZ";
