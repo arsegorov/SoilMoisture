@@ -7,7 +7,7 @@ Monitoring a planter soil moisture levels and watering it when necessary
 
 ## Requirements
 1. Arduino UNO WiFi Rev. 2
-1. An Arduino development environment. For and IDE, Arduino IDE or VS Code (which also needs Arduino IDE < 2.0 for the executables) works, but Arduino CLI should work, too.
+1. An Arduino development environment. For an IDE, Arduino IDE or VS Code (which also needs Arduino IDE < 2.0 for the executables) works, but Arduino CLI should also work.
 1. The following Arduino libraries:
    * Time
    * Timezone
