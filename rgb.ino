@@ -30,7 +30,8 @@ void rgb_setup() {
 /**
  * Sets an RGB pin signal intensity.
  * 
- * @param pin one of the RGB LED's control pins: RED_PIN, GREEN_PIN, or BLUE_PIN
+ * @param pin one of the RGB LED's control pins:
+ *  RED_PIN, GREEN_PIN, or BLUE_PIN
  * @param intensity desired intensity, 0..255
 */
 void set_intensity(uint8_t pin, uint8_t intensity) {
@@ -52,7 +53,8 @@ void rgb(uint8_t color, uint8_t intensity) {
 
 
 /**
- * Blinks the RGB LED with the given 3-bit color, 8-bit intensity, time on, time off, and number of repeats.
+ * Blinks the RGB LED with the given 3-bit color, 8-bit intensity, time on,
+ * time off, and number of repeats.
  * 
  * @param color 3-bit color, the high 5 bits are ignored
  * @param intensity 8-bit intensity
@@ -60,8 +62,14 @@ void rgb(uint8_t color, uint8_t intensity) {
  * @param repeat how many times to blink
  * @param ms_off the time in ms the LED should be off
 */
-void blink(uint8_t color, uint8_t intensity, unsigned long ms_on, int repeat = 1, unsigned long ms_off = INT32_MAX) {
-  if (ms_off == INT32_MAX) {
+void blink(
+  uint8_t color,
+  uint8_t intensity,
+  unsigned long ms_on,
+  int repeat,
+  unsigned long ms_off
+) {
+  if (ms_off == UINT32_MAX) {
     ms_off = ms_on;
   }
   for (int i = 0; i < repeat; i++) {
@@ -92,7 +100,8 @@ void rgb_16k(int color) {
 
 
 /**
- * Blinks the RGB LED with the given 16-bit color, time on, time off, and number of repeats.
+ * Blinks the RGB LED with the given 16-bit color, time on,
+ * time off, and number of repeats.
  * 
  * @param color 16-bit color;
  *  the highest 4 bits are overall intensity adjustment,
@@ -101,8 +110,8 @@ void rgb_16k(int color) {
  * @param repeat how many times to blink
  * @param ms_off the time in ms the LED should be off
 */
-void blink_16k(int color, unsigned long ms_on, int repeat = 1, unsigned long ms_off = INT32_MAX) {
-  if (ms_off == INT32_MAX) {
+void blink_16k(int color, unsigned long ms_on, int repeat, unsigned long ms_off) {
+  if (ms_off == UINT32_MAX) {
     ms_off = ms_on;
   }
   for (int i = 0; i < repeat; i++) {

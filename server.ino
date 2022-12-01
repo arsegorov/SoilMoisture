@@ -53,7 +53,7 @@ void listen_for_clients(float sensor_val, String local_time) {
       client.print("<!DOCTYPE HTML>\n");
       client.print("<html>\n");
       client.print("\t<div style=\"font-family: Consolas, monospace; font-size: 20px;\"'>\n");
-      client.print("\t\tLocal date and time: ");
+      client.print("\t\tLocal time of last measurement: ");
       client.print(local_time);
       client.print("<br />\n");
       client.print("\t\tMoisture sensor reading: ");

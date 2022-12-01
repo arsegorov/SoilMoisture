@@ -36,7 +36,7 @@ void time_setup() {
   // If the time didn't sync, try for an hour before giving up
   // TODO: update this logic to a more elegant failure handling
   while (t < 3600UL) { 
-    blink(CYAN, REALLY_DIM, ONE, 1, 0);
+    blink(CYAN, REALLY_DIM, ONE, 1, ZERO);
 
     setSyncProvider(get_ntp_time);
     t = now();

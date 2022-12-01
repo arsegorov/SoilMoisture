@@ -27,7 +27,7 @@ void setup() {
 
 
 time_t last_measurement_time = 0UL;
-const time_t MEASUREMENT_INTERVAL = 600UL;
+const time_t MEASUREMENT_INTERVAL = 3600UL;
 
 float value = 0.0;
 String local_time = "Ddd, 0000-00-00, 00:00:00 ZZZ";
@@ -41,12 +41,10 @@ void loop() {
     last_measurement_time = t;
     value = sensor_value();
     local_time = local_time_string();
-
-    listen_for_clients(value, local_time);
   } else {
-    listen_for_clients(value, local_time);
-    blink(WHITE, REALLY_DIM, ONE, 1, ZERO);
+    delay_secs(1);
   }
+  listen_for_clients(value, local_time);
 
   delay_secs(14);
 }

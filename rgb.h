@@ -22,11 +22,11 @@ const uint8_t BRIGHT = 255,
               VERY_DIM = 63,
               REALLY_DIM = 31;
 
-const uint8_t ZERO = 0UL,
-              TENTH = 100UL,
-              QUARTER = 250UL,
-              HALF = 500UL,
-              ONE = 1000UL;
+const unsigned long ZERO = 0UL,
+                    TENTH = 100UL,
+                    QUARTER = 250UL,
+                    HALF = 500UL,
+                    ONE = 1000UL;
 
 void rgb_setup();
 void rgb(uint8_t color, uint8_t intensity);
@@ -35,14 +35,14 @@ void blink(
   uint8_t intensity,
   unsigned long ms_on,
   int repeat = 1,
-  unsigned long ms_off = INT32_MAX
+  unsigned long ms_off = UINT32_MAX
 );
 void rgb_16k(int color);
 void blink_16k(
   int color,
   unsigned long ms_on,
   int repeat = 1,
-  unsigned long ms_off = INT32_MAX
+  unsigned long ms_off = UINT32_MAX
 );
 
 #endif
