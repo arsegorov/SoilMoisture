@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <WiFiNINA.h>
 #include <EasyNTPClient.h>
-#include <WiFiUDP.h>
+#include <WiFiUdp.h>
 #include <TimeLib.h>
 #include <Timezone.h>
 
@@ -35,7 +35,7 @@ void time_setup() {
 
   // If the time didn't sync, try for an hour before giving up
   // TODO: update this logic to a more elegant failure handling
-  while (t < 3600UL) { 
+  while (t < 3600UL) {
     blink(CYAN, REALLY_DIM, ONE, 1, ZERO);
 
     setSyncProvider(get_ntp_time);
@@ -59,7 +59,7 @@ void time_setup() {
 
 /**
  * Breaks down a Unix timestamp into date-time components. Assumes UTC.
- * 
+ *
  * @param unix_timestamp the seconds count from the Unix epoch in GMT
 */
 tmElements_t utc_time_tuple(time_t unix_timestamp) {
@@ -89,7 +89,7 @@ String utc_time_string() {
 
 /**
  * Breaks down a Unix timestamp into date-time components. Assumes local timezone.
- * 
+ *
  * @param unix_timestamp the seconds count from the Unix epoch in GMT
 */
 tmElements_t local_time_tuple(time_t unix_timestamp) {
