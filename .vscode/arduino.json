@@ -3,5 +3,5 @@
     "sketch": "SoilMoisture.ino",
     "configuration": "mode=on",
     "board": "arduino:megaavr:uno2018",
-    "port": "COM3"
+    "port": "/dev/ttyACM0"
 }
