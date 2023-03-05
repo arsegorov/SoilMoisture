@@ -7,6 +7,9 @@
 #include "utils.h"
 
 
+time_t last_time_sync_time;
+const time_t TIME_SYNC_INTERVAL = 86400UL;
+
 void setup() {
   serial_up();
   rgb_setup();
@@ -18,6 +21,7 @@ void setup() {
   }
 
   time_setup();
+  last_time_sync_time = now();
 
   sensor_setup();
   pump_setup();
@@ -28,23 +32,31 @@ void setup() {
 
 time_t last_measurement_time = 0UL;
 const time_t MEASUREMENT_INTERVAL = 3600UL;
+const time_t LOOP_INTERVAL = 15UL;
 
 float value = 0.0;
+
 String local_time = "Ddd, 0000-00-00, 00:00:00 ZZZ";
 
 void loop() {
-  time_t t = now();
+  time_t t = now(), t1;
+
+  if (t - last_time_sync_time >= TIME_SYNC_INTERVAL) {
+    time_setup();
+    last_time_sync_time = now();
+  }
+
   if (
     last_measurement_time == 0UL
     || t - last_measurement_time >= MEASUREMENT_INTERVAL
   ) {
-    last_measurement_time = t;
     value = sensor_value();
+    last_measurement_time = t;
     local_time = local_time_string();
-  } else {
-    delay_secs(1);
   }
+
   listen_for_clients(value, local_time);
 
-  delay_secs(14);
+  t1 = now();
+  delay_secs(LOOP_INTERVAL - (t1 - t) % LOOP_INTERVAL);
 }
