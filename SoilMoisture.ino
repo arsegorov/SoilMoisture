@@ -42,7 +42,7 @@ void loop() {
   time_t t = now(), t1;
 
   if (t - last_time_sync_time >= TIME_SYNC_INTERVAL) {
-    time_setup();
+    time_sync();
     last_time_sync_time = now();
   }
 
