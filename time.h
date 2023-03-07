@@ -15,6 +15,7 @@ const char NTP_POOL[] = "time.nist.gov";
 const unsigned long NTP_UPDATE_IMTERVAL = 86400UL;
 
 void time_setup();
+void time_sync();
 String utc_time_string();
 String local_time_string();
 

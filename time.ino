@@ -33,9 +33,9 @@ void time_setup() {
   setSyncProvider(get_ntp_time);
   t = now();
 
-  // If the time didn't sync, try for an hour before giving up
   // TODO: update this logic to a more elegant failure handling
-  while (t < 3600UL) { 
+  // If the time didn't sync, try for an hour before giving up
+  while (t < 3600UL) {
     blink(CYAN, REALLY_DIM, ONE, 1, ZERO);
 
     setSyncProvider(get_ntp_time);
@@ -47,19 +47,49 @@ void time_setup() {
   setSyncInterval(NTP_UPDATE_IMTERVAL);
 
   Serial.println("Internet time sync complete.");
-  blink(CYAN, BRIGHT, TENTH, 5);
 
   Serial.print("Current UTC time: ");
   Serial.println(utc_time_string());
   Serial.println();
+  blink(CYAN, BRIGHT, TENTH, 5);
 
   local_tz = Timezone(PDT, PST);
 }
 
 
 /**
+ * Syncs time from the internet except for the initial setup.
+*/
+void time_sync() {
+  time_t t, curr_time;
+  unsigned long offset = millis(), wait;
+
+  Serial.println("Syncing time from the internet...");
+  blink(CYAN, REALLY_DIM, ONE, 1, ZERO);
+
+  curr_time = now();
+  setSyncProvider(get_ntp_time);
+  t = now();
+
+  // Checking if the time is way off
+  if (abs(t - curr_time) > 15 * 60UL) {
+    Serial.println("Internet time sync failed. Trying again tomorrow.");
+  } else {
+    setTime(t);
+    Serial.println("Internet time sync complete.");
+
+    Serial.print("Current UTC time: ");
+    Serial.println(utc_time_string());
+    Serial.println();
+  }
+
+  blink(CYAN, BRIGHT, TENTH, 5);
+}
+
+
+/**
  * Breaks down a Unix timestamp into date-time components. Assumes UTC.
- * 
+ *
  * @param unix_timestamp the seconds count from the Unix epoch in GMT
 */
 tmElements_t utc_time_tuple(time_t unix_timestamp) {
@@ -89,7 +119,7 @@ String utc_time_string() {
 
 /**
  * Breaks down a Unix timestamp into date-time components. Assumes local timezone.
- * 
+ *
  * @param unix_timestamp the seconds count from the Unix epoch in GMT
 */
 tmElements_t local_time_tuple(time_t unix_timestamp) {
