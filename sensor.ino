@@ -3,7 +3,7 @@
 
 
 void sensor_setup() {
-  Serial.print("Settting up moisture sensor...");
+  Serial.print("Setting up moisture sensor...");
   pinMode(SENSOR_POWER_PIN, OUTPUT);
   blink(PURPLE, BRIGHT, TENTH, 5);
   Serial.println("Done\n");

@@ -23,7 +23,7 @@ void server_setup() {
 }
 
 
-void listen_for_clients(float sensor_val, String local_time) {
+void listen_for_clients(float sensor_val, String local_time, String last_time_sync) {
   WiFiClient client = server.available();
   if (!client) return;
 
@@ -53,6 +53,9 @@ void listen_for_clients(float sensor_val, String local_time) {
       client.print("<!DOCTYPE HTML>\n");
       client.print("<html>\n");
       client.print("\t<div style=\"font-family: Consolas, monospace; font-size: 20px;\"'>\n");
+      client.print("\t\tLast time sync: ");
+      client.print(last_time_sync);
+      client.print("<br />\n");
       client.print("\t\tLocal time of last measurement: ");
       client.print(local_time);
       client.print("<br />\n");

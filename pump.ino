@@ -2,7 +2,7 @@
 #include "pump.h"
 
 void pump_setup() {
-  Serial.print("Settting up water pump...");
+  Serial.print("Setting up water pump...");
   pinMode(PUMP_POWER_PIN, OUTPUT);
   blink(YELLOW, BRIGHT, TENTH, 5);
   Serial.println("Done\n");

@@ -8,6 +8,7 @@
 
 
 time_t last_time_sync_time;
+String last_time_sync = "Ddd, 0000-00-00, 00:00:00 ZZZ";
 const time_t TIME_SYNC_INTERVAL = 86400UL;
 
 void setup() {
@@ -22,6 +23,7 @@ void setup() {
 
   time_setup();
   last_time_sync_time = now();
+  last_time_sync = local_time_string();
 
   sensor_setup();
   pump_setup();
@@ -44,6 +46,7 @@ void loop() {
   if (t - last_time_sync_time >= TIME_SYNC_INTERVAL) {
     time_sync();
     last_time_sync_time = now();
+    last_time_sync = local_time_string();
   }
 
   if (
@@ -55,7 +58,7 @@ void loop() {
     local_time = local_time_string();
   }
 
-  listen_for_clients(value, local_time);
+  listen_for_clients(value, local_time, last_time_sync);
 
   t1 = now();
   delay_secs(LOOP_INTERVAL - (t1 - t) % LOOP_INTERVAL);
